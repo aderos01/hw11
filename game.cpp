@@ -6,6 +6,7 @@
 #include "game.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 
 //constructor
@@ -23,25 +24,48 @@ Game::Game(string filename, string play_chopsticks){
     /*   Read from the input file to initialize the  */
     /*   deck.                                       */
     /*-----------------------------------------------*/  
-    ifstream file(filename);
+    std::ifstream file(filename);
     if (!file) {
-        cerr << "Error: Cannot open file " << filename << endl;
+        std::cerr << "Error: Cannot open file " << filename << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    string type;
-    string count;
-    while (file >> type >> count) {
-        // int num = stoi(count);
-        // for (int i = 0; i < num; i++) {
-        if (type != "type" && count != "count")
-           deck.push_back(Card(type, stoi(count)));
-        // }
+    std::string line;
+    getline(file, line); // Skip the header line
+
+    while (getline(file, line)) {
+        std::istringstream iss(line);
+        std::string type;
+        std::string countStr;
+        int count = 0; // Default count
+
+        iss >> type;
+        if (iss >> countStr) { // Attempt to read the count
+            try {
+                count = std::stoi(countStr);
+            } catch (const std::invalid_argument& e) {
+                std::cerr << "Invalid number format for count in line: " << line << std::endl;
+                // Assume default count = 1 if conversion fails
+            } catch (const std::out_of_range& e) {
+                std::cerr << "Number out of range for count in line: " << line << std::endl;
+                // Assume default count = 1 if conversion fails
+            }
+        }
+
+        if (!type.empty()) {
+            Card c(type, count);
+            deck.push_back(c);
+        }
     }
 
+    file.close();
+
     //initialize players
-    for(int i = 0; i < PLAYER_COUNT; i++){
-        players.push_back(Player());
+    // Make a temporary array of players
+    // Player temp_players[PLAYER_COUNT] = {Player(), Player(), Player()};
+    // Set the players array to the temporary array
+    for (int i = 0; i < PLAYER_COUNT; i++) {
+        players[i] = Player();
     }
 }
 
@@ -91,11 +115,11 @@ void Game::playGame(){
             /*   TODO (Part I): Pass deck to the right           */
             // set all players passingHands to their hands
             for (int player = 0; player < PLAYER_COUNT; player++) {
-                players[player].setPassingHand(players[player].getHand());
+                players[player].setPassingHand(*players[player].getHand());
             }
             // set each player's hand to the passingHand of the previous player
             for (int player = 0; player < PLAYER_COUNT; player++) {
-                players[(player + 1) % PLAYER_COUNT].setHand(players[player].getPassingHand());
+                players[(player + 1) % PLAYER_COUNT].setHand(*players[player].getPassingHand());
             }
 
         }

@@ -31,15 +31,15 @@ int Player::getScore() {
 }
 
 void Player::setHand(vector<Card> hand) {
-  this->hand = &hand;
+  this->hand = hand;
 }
 
 void Player::setSelectedCards(vector<Card> selectedCards) {
-  this->selectedCards = &selectedCards;
+  this->selectedCards = selectedCards;
 }
 
 void Player::setPassingHand(vector<Card> passingHand) {
-  this->passingHand = &passingHand;
+  this->passingHand = passingHand;
 }
 
 void Player::setPuddingCount(int puddingCount) {

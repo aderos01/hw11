@@ -16,6 +16,9 @@ public:
   std::string getSushiType();
   int getMakiCount();
 
+  // overloaded operator ==
+  bool operator==(const Card &other) const;
+
 private:
   std::string sushiType;
   int makiCount;

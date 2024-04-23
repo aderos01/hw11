@@ -21,3 +21,7 @@ string Card::getSushiType() {
 int Card::getMakiCount() {
     return makiCount;
 }
+
+bool Card::operator==(const Card& other) const {
+    return (sushiType == other.sushiType && makiCount == other.makiCount);
+}
