@@ -35,7 +35,7 @@ Game::Game(string filename, string play_chopsticks){
         // int num = stoi(count);
         // for (int i = 0; i < num; i++) {
         if (type != "type" && count != "count")
-           deck.push_back(Card(type, count));
+           deck.push_back(Card(type, stoi(count)));
         // }
     }
 
@@ -60,7 +60,7 @@ void Game::playGame(){
                 Card c = deck.back();
                 deck.pop_back();
                 /*   TODO (Part I): Add card to player's hand      */
-                players[player].hand.push_back(c);
+                players[player].addCardToHand(c);
             }
         }
 
@@ -79,24 +79,25 @@ void Game::playGame(){
 
                 /*   TODO (Part I): Set aside selected card      */
                 // Create a temporary card to store the selected card
-                Card temp = players[player].hand[card_index];
+                Card temp = players[player].getCardFromHand(card_index);
                 // Remove the selected card from the player's hand
-                players[player].hand.erase(players[player].hand.begin() + card_index);
+                players[player].removeCardFromHand(card_index);
                 // Add the selected card to the player's revealed cards
-                players[player].selectedCards.push_back(temp);
+                players[player].addCardToSelectedCards(temp);
             }
             /*   TODO (Part I): Reveal selected cards            */
             board.drawBoard(players, round);
             
             /*   TODO (Part I): Pass deck to the right           */
-            vector<Vector<Card>> tempHands(PLAYER_COUNT);
+            // set all players passingHands to their hands
             for (int player = 0; player < PLAYER_COUNT; player++) {
-                tempHands[player] = players[player].hand;
+                players[player].setPassingHand(players[player].getHand());
             }
+            // set each player's hand to the passingHand of the previous player
             for (int player = 0; player < PLAYER_COUNT; player++) {
-                int next_player = (player + 1) % PLAYER_COUNT;
-                players[player].hand = tempHands[next_player];
+                players[(player + 1) % PLAYER_COUNT].setHand(players[player].getPassingHand());
             }
+
         }
         
         break;

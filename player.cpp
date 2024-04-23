@@ -10,12 +10,16 @@ Player::Player() {
   score = 0;
 }
 
-vector<Card>* Player::getPassingHand() {
-  return &passingHand;
+vector<Card>* Player::getHand() {
+  return &hand;
 }
 
 vector<Card>* Player::getSelectedCards() {
-  return &revealedCards;
+  return &selectedCards;
+}
+
+vector<Card>* Player::getPassingHand() {
+  return &passingHand;
 }
 
 int Player::getPuddingCount() {
@@ -27,11 +31,15 @@ int Player::getScore() {
 }
 
 void Player::setHand(vector<Card> hand) {
-  this->hand = hand;
+  this->hand = &hand;
 }
 
-void Player::setSelectedCards(vector<Card> revealedCards) {
-  this->revealedCards = revealedCards;
+void Player::setSelectedCards(vector<Card> selectedCards) {
+  this->selectedCards = &selectedCards;
+}
+
+void Player::setPassingHand(vector<Card> passingHand) {
+  this->passingHand = &passingHand;
 }
 
 void Player::setPuddingCount(int puddingCount) {
@@ -46,8 +54,8 @@ void Player::addCardToHand(Card card) {
   this->hand.push_back(card);
 }
 
-void Player::addCardToPassingHand(Card card) {
-  this->passingHand.push_back(card);
+void Player::addCardToSelectedCards(Card card) {
+  this->selectedCards.push_back(card);
 }
 
 void Player::removeCardFromHand(Card card) {
@@ -63,19 +71,23 @@ void Player::removeCardFromHand(int index) {
   hand.erase(hand.begin() + index);
 }
 
-void Player::removeCardFromPassingHand(Card card) {
-  for (int i = 0; i < passingHand.size(); i++) {
-    if (passingHand[i] == card) {
-      passingHand.erase(passingHand.begin() + i);
+void Player::removeCardFromSelectedCards(Card card) {
+  for (int i = 0; i < selectedCards.size(); i++) {
+    if (selectedCards[i] == card) {
+      selectedCards.erase(selectedCards.begin() + i);
       break;
     }
   }
 }
 
-void Player::removeCardFromPassingHand(int index) {
-  passingHand.erase(passingHand.begin() + index);
+void Player::removeCardFromSelectedCards(int index) {
+  selectedCards.erase(selectedCards.begin() + index);
 }
 
 void Player::displaySelectedCards() {
-  
+
+}
+
+Card Player::getCardFromHand(int index) {
+  return hand[index];
 }

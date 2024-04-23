@@ -16,13 +16,15 @@ public:
   Player();
   Player(std::vector<Card> hand);
 
+  std::vector<Card>* getHand();
+  std::vector<Card>* getSelectedCards();
   std::vector<Card>* getPassingHand();
-  std::vector<Card>* getRevealedCards();
   int getPuddingCount();
   int getScore();
 
   void setHand(std::vector<Card> hand);
   void setSelectedCards(std::vector<Card> selectedCards);
+  void setPassingHand(std::vector<Card> passingHand);
   void setPuddingCount(int puddingCount);
   void setScore(int score);
 
@@ -36,12 +38,16 @@ public:
 
   void displaySelectedCards();
 
+  Card getCardFromHand(int index);
+
 private:
   // Data members
   std::vector<Card> hand;
   std::vector<Card> selectedCards;
+  std::vector<Card> passingHand;
   int puddingCount;
   int score;
+
 };
 
 #endif

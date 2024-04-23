@@ -65,7 +65,7 @@ void Board::drawPlayer(int p_index, Player *player, int turn){
     bool myTurn = (p_index == turn) ? true : false;
     int vpos = (p_index * (CARD_HEIGHT + 3)) + p_index;
     vector<Card> *p_hand = player->getPassingHand();
-    vector<Card> *r_hand = player->getRevealedCards();
+    vector<Card> *r_hand = player->getSelectedCards();
 
     //draw player heading
     vpos++;
@@ -100,7 +100,7 @@ void Board::drawRound(int p_index, Player *player){
     int hpos = 1;
     int mask[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     string label;
-    vector<Card> *p_deck = player->getRevealedCards();
+    vector<Card> *p_deck = player->getSelectedCards();
 
     //draw player heading
     vpos++;
